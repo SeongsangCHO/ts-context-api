@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { IMAGE_URL } from "../../../api";
-
+import { useMovieDispatch, useMovieState } from "../../../store/Movie";
+import {
+  addWatchedData,
+  deleteWatchedData,
+} from "../../../store/Movie/Actions";
+import nong from "../../../assets/nong.png";
 interface IProps {
   movie: any;
 }
@@ -22,17 +27,37 @@ interface IProps {
 // vote_count: 27 /kdnZgD1PfNQmRKWBAFvCsyNfFG7.jpg
 
 const MovieItem: React.FC<IProps> = ({ movie }) => {
+  const dispatch = useMovieDispatch();
+  const { watchedList } = useMovieState();
+  const checkWatched = () => {
+    return watchedList.some((item) => item.id === movie.id);
+  };
+  const [isWatched, setIsWatched] = useState(checkWatched());
+  useEffect(() => {
+    // console.log(movie.id, isBookmark);
+  }, [isWatched]);
+  // 북마크리스트를 불러온다 ? movie.id includes bookmarkList => 보기싫어요
+  // movie.id == 544 ,  => bookMark[544] => 있으면, 보기싫어요를 출력해
   const handleClick = () => {
-    console.log("보고싶은영화로 클릭", movie.id);
+    if (!isWatched) {
+      dispatch(addWatchedData(movie));
+    } else {
+      dispatch(deleteWatchedData(movie.id));
+    }
   };
   return (
     <Item>
-      <img src={IMAGE_URL + movie.poster_path}></img>
+      <img
+        src={movie.poster_path === null ? nong : IMAGE_URL + movie.poster_path}
+      ></img>
       <Info>
         <li>제목 : {movie.title}</li>
         <li>개봉일 : {movie.release_date}</li>
+        <li>id : {movie.id}</li>
       </Info>
-      <AddBookmarkBtn onClick={handleClick}>보고싶어요</AddBookmarkBtn>
+      <AddWatchedListButton onClick={handleClick}>
+        {isWatched ? "이미봤찌롱" : "보고싶어요"}
+      </AddWatchedListButton>
     </Item>
   );
 };
@@ -51,7 +76,7 @@ const Info = styled.ul`
   list-style: none;
 `;
 
-const AddBookmarkBtn = styled.button`
+const AddWatchedListButton = styled.button`
   position: absolute;
   right: 0;
   top: 0;
