@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { IMAGE_URL } from "../../../api";
+import nong from "../../../assets/nong.png";
 
 interface IProps {
   movie: any;
@@ -21,18 +22,34 @@ interface IProps {
 // vote_average: 6.5
 // vote_count: 27 /kdnZgD1PfNQmRKWBAFvCsyNfFG7.jpg
 
-const MovieItem: React.FC<IProps> = ({ movie }) => {
-  const handleClick = () => {
-    console.log("보고싶은영화로 클릭", movie.id);
+const MovieItem: React.FC<IProps> = ({ movie, children }) => {
+  const checkWatched = () => {
+    // return watchedList.some((item) => item.id === movie.id);
+    return true;
   };
+  const [isWatched, setIsWatched] = useState(checkWatched());
+  const handleClick = () => {
+    if (!isWatched) {
+      // 본 영화 추가
+    } else {
+      // 본 영화 삭제
+    }
+  };
+
   return (
     <Item>
-      <img src={IMAGE_URL + movie.poster_path}></img>
+      <img
+        src={movie.poster_path === null ? nong : IMAGE_URL + movie.poster_path}
+      ></img>
       <Info>
         <li>제목 : {movie.title}</li>
         <li>개봉일 : {movie.release_date}</li>
+        <li>id : {movie.id}</li>
       </Info>
-      <AddBookmarkBtn onClick={handleClick}>보고싶어요</AddBookmarkBtn>
+      <AddWatchedListButton onClick={handleClick}>
+        {isWatched ? "본거 취소" : "본 영화 등록"}
+      </AddWatchedListButton>
+      {children}
     </Item>
   );
 };
@@ -51,7 +68,7 @@ const Info = styled.ul`
   list-style: none;
 `;
 
-const AddBookmarkBtn = styled.button`
+const AddWatchedListButton = styled.button`
   position: absolute;
   right: 0;
   top: 0;
