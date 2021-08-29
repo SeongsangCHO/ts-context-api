@@ -1,14 +1,28 @@
-export const BASE_URL =
-  "http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=f5eef3421c602c6cb7ea224104795888";
-export const QUERY_STRING = {
-  curPage: "curPage",
-  itemPerPage: "itemPerPage",
-};
+import axios from "axios";
 
-const getMovieList = async (url: string) => {
+import dotenv from "dotenv";
+dotenv.config();
+export const API_KEY = process.env.REACT_APP_API_KEY;
+export const BASE_URL = `https://api.themoviedb.org/3/`;
+export const END_POINT = {
+  trending: "trending/movie/day",
+};
+// "poster_sizes": [
+//   "w92",
+//   "w154",
+//   "w185",
+//   "w342",
+//   "w500",
+//   "w780",
+//   "original"
+// ],
+export const IMAGE_URL = `https://image.tmdb.org/t/p/w185`;
+export const getMovieList = async (url: string, params = {}) => {
   try {
-    const res = await fetch(url);
-    return res;
+    const res = await axios(url, {
+      params: { ...params, language: "ko", api_key: API_KEY },
+    });
+    return res.data;
   } catch (error) {
     console.error(error);
   }
