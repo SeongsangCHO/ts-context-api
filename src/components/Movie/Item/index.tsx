@@ -45,7 +45,7 @@ const MovieItem: React.FC<IProps> = ({ movie, children }) => {
     <Item>
       <img
         src={movie.poster_path === null ? nong : IMAGE_URL + movie.poster_path}
-      ></img>
+      />
       <Info>
         <li>제목 : {movie.title}</li>
         <li>개봉일 : {movie.release_date}</li>

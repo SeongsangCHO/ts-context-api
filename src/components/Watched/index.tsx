@@ -1,16 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import MovieItem from "../Movie/Item";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import Comment from "./Comment";
 import { v4 as uuidv4 } from "uuid";
 
 interface IProps {}
 
-const WatchedList: React.FC<IProps> = ({ }) => {
+const WatchedList: React.FC<IProps> = ({}) => {
   const { watchedList } = useSelector((state: RootState) => state.movie);
-  
+
   return (
     <Wrapper>
       <List>

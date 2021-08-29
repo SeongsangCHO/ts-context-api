@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../";
-import { createSelector } from "reselect";
+import { number } from "yargs";
+import { AppDispatch } from "../";
+import { getMovieList, BASE_URL, END_POINT } from "../../api";
 
 export interface IMovieListData {
   title: string;
@@ -25,6 +26,7 @@ export interface IWatchedListData extends IMovieListData {
 interface MovieState {
   movieData: IMovieListData[];
   watchedList: IWatchedListData[];
+  page: number;
 }
 
 export const MovieSlice = createSlice({
@@ -32,10 +34,12 @@ export const MovieSlice = createSlice({
   initialState: {
     movieData: [],
     watchedList: [],
+    page: 1,
   } as MovieState,
   reducers: {
     addMovieData: (state, { payload: data }) => {
       state.movieData.push(...data);
+      state.page += 1;
     },
     addWatchedData: (state, { payload: data }) => {
       state.watchedList.push({ ...data, comment: "" });
@@ -65,5 +69,23 @@ export const {
 
 // export const selectMovieData = (state: RootState) => state.movie.movieData;
 // export const selectWatchedData = (state: RootState) => state.movie.watchedList; // const watchedList = useSelector(selectWatchedDdata);
+
+export const fetchMovies =
+  (isIntersect: boolean, page: number) => async (dispatch: AppDispatch) => {
+    if (isIntersect) {
+      try {
+        const data = await getMovieList(`${BASE_URL}/${END_POINT.trending}`, {
+          page: page,
+        });
+        if (!data) {
+          fetchMovies(isIntersect, page + 1);
+        } else {
+          dispatch(addMovieData(data.results));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
 
 export default MovieSlice.reducer;
