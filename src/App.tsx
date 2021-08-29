@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WatchedList from "./components/Watched";
 import MovieList from "./components/Movie/List";
 import { GlobalStyle } from "./styles/GlobalStyle";
+import store from "./Store";
+import { Provider } from "react-redux";
 
 function App() {
   return (
@@ -18,12 +20,14 @@ function App() {
           </li>
         </ul>
       </div>
-      <Route path="/" exact>
-        <MovieList />
-      </Route>
-      <Route path="/watched">
-        <WatchedList />
-      </Route>
+      <Provider store={store}>
+        <Route path="/" exact>
+          <MovieList />
+        </Route>
+        <Route path="/watched">
+          <WatchedList />
+        </Route>
+      </Provider>
     </Router>
   );
 }

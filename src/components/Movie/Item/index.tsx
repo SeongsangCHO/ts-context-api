@@ -25,7 +25,7 @@ interface IProps {
 const MovieItem: React.FC<IProps> = ({ movie, children }) => {
   const checkWatched = () => {
     // return watchedList.some((item) => item.id === movie.id);
-    return true;
+    return false;
   };
   const [isWatched, setIsWatched] = useState(checkWatched());
   const handleClick = () => {
