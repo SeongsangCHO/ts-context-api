@@ -19,14 +19,19 @@ export interface IMovieListData {
   vote_count?: number;
 }
 
+export interface IBookmarkListData extends IMovieListData {
+  comment: string;
+}
+
 export type Action =
-  | { type: "ADD_MOVIE_DATA"; payload: IMovieListData[] }
-  | { type: "ADD_WATCHED_DATA"; payload: IMovieListData[] }
-  | { type: "DELETE_WATCHED_DATA"; payload: number };
+  | { type: "ADD_MOVIE_DATA"; payload: IMovieListData }
+  | { type: "ADD_WATCHED_DATA"; payload: IBookmarkListData }
+  | { type: "DELETE_WATCHED_DATA"; payload: number }
+  | { type: "UPDATE_COMMENT_DATA"; payload: IBookmarkListData };
 
 export interface IMovieContext {
   movieData: IMovieListData[];
-  watchedList: IMovieListData[];
+  watchedList: IBookmarkListData[];
 }
 
 export const initState: IMovieContext = {

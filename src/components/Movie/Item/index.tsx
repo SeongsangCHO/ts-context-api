@@ -26,7 +26,7 @@ interface IProps {
 // vote_average: 6.5
 // vote_count: 27 /kdnZgD1PfNQmRKWBAFvCsyNfFG7.jpg
 
-const MovieItem: React.FC<IProps> = ({ movie }) => {
+const MovieItem: React.FC<IProps> = ({ movie, children }) => {
   const dispatch = useMovieDispatch();
   const { watchedList } = useMovieState();
   const checkWatched = () => {
@@ -56,8 +56,9 @@ const MovieItem: React.FC<IProps> = ({ movie }) => {
         <li>id : {movie.id}</li>
       </Info>
       <AddWatchedListButton onClick={handleClick}>
-        {isWatched ? "이미봤찌롱" : "보고싶어요"}
+        {isWatched ? "본거 취소" : "본 영화 등록"}
       </AddWatchedListButton>
+      {children}
     </Item>
   );
 };

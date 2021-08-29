@@ -25,6 +25,13 @@ export const movieReducer = (
           (item) => item.id !== action.payload
         ),
       };
+    case "UPDATE_COMMENT_DATA":
+      return {
+        ...state,
+        watchedList: state.watchedList.map((item) =>
+          item.id === action.payload.id ? { ...action.payload } : item
+        ),
+      };
     default:
       return state;
   }
