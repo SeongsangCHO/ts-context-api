@@ -4,76 +4,18 @@ import { getMovieList, BASE_URL, API_KEY, END_POINT } from "../../../api";
 import styled from "styled-components";
 import MovieItem from "../Item";
 import useIntersectObserver from "../../../hooks/useIntersectObserver";
-// `${API_ENDPOINT}/${nextPage}?api_key=${API_KEY}`
+import { RootState } from "../../../store";
+import { useSelector, useDispatch } from "react-redux";
+import { addMovieData } from "../../../store/Movie";
 
 interface IProps {}
 
-const mockData = [
-  {
-    companys: [],
-    directors: [],
-    genreAlt: "드라마,스릴러",
-    movieCd: "20210164",
-    movieNm: "박현정 정가",
-    movieNmEn: "Advise & Consent",
-    nationAlt: "미국",
-    openDt: "",
-    prdtStatNm: "기타",
-    prdtYear: "1962",
-    repGenreNm: "드라마",
-    repNationNm: "미국",
-    typeNm: "장편",
-  },
-  {
-    companys: [],
-    directors: [],
-    genreAlt: "드라마,스릴러",
-    movieCd: "20210164",
-    movieNm: "강보현 정가",
-    movieNmEn: "Advise & Consent",
-    nationAlt: "미국",
-    openDt: "",
-    prdtStatNm: "기타",
-    prdtYear: "1962",
-    repGenreNm: "드라마",
-    repNationNm: "미국",
-    typeNm: "장편",
-  },
-  {
-    companys: [],
-    directors: [],
-    genreAlt: "드라마,스릴러",
-    movieCd: "20210164",
-    movieNm: "한우빈 정가",
-    movieNmEn: "Advise & Consent",
-    nationAlt: "미국",
-    openDt: "",
-    prdtStatNm: "기타",
-    prdtYear: "1962",
-    repGenreNm: "드라마",
-    repNationNm: "미국",
-    typeNm: "장편",
-  },
-  {
-    companys: [],
-    directors: [],
-    genreAlt: "드라마,스릴러",
-    movieCd: "20210164",
-    movieNm: "농담곰 정가",
-    movieNmEn: "Advise & Consent",
-    nationAlt: "미국",
-    openDt: "",
-    prdtStatNm: "기타",
-    prdtYear: "1962",
-    repGenreNm: "드라마",
-    repNationNm: "미국",
-    typeNm: "장편",
-  },
-];
 const MovieList: React.FC<IProps> = ({}) => {
-  //pageNum 전역관리
+  const dispatch = useDispatch();
+  // const movieData = useSelector(selectMovieData);
+  // const movie = selectMovieData(state);
+  const { movieData } = useSelector((state: RootState) => state.movie);
   const [page, setPage] = useState(1);
-  const [movieData, setMovieData] = useState<any>([]);
   const intersectRef = useRef<HTMLDivElement | null>(null);
   const { isIntersect } = useIntersectObserver(intersectRef, {
     rootMargin: "200px",
@@ -88,7 +30,9 @@ const MovieList: React.FC<IProps> = ({}) => {
         if (!data) {
           loadMoreMovieData(page + 1);
         } else {
-          setMovieData([...movieData].concat(...data.results));
+          // add
+          dispatch(addMovieData(data.results));
+          // setMovieData([...movieData].concat(...data.results));
           setPage(page + 1);
         }
       } catch (error) {

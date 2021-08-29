@@ -1,8 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import BookmarkList from "./components/Bookmark";
+import WatchedList from "./components/Watched";
 import MovieList from "./components/Movie/List";
 import { GlobalStyle } from "./styles/GlobalStyle";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
   return (
@@ -14,16 +16,18 @@ function App() {
             <Link to="/">main</Link>
           </li>
           <li>
-            <Link to="/bookmark">bookmark</Link>
+            <Link to="/watched">watched</Link>
           </li>
         </ul>
       </div>
-      <Route path="/" exact>
-        <MovieList />
-      </Route>
-      <Route path="/bookmark">
-        <BookmarkList />
-      </Route>
+      <Provider store={store}>
+        <Route path="/" exact>
+          <MovieList />
+        </Route>
+        <Route path="/watched">
+          <WatchedList />
+        </Route>
+      </Provider>
     </Router>
   );
 }
