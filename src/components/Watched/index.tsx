@@ -30,3 +30,7 @@ const NextNoti = styled.div``;
 const List = styled.ul`
   border: 1px solid black;
 `;
+
+
+//액션생성자
+//리듀서
